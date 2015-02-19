@@ -1,0 +1,38 @@
+CHANGELOG
+
+30 Jul 2013 7.x-1.2
+Provide option to render Discourse header in a Drupal block.
+Add general support for rendering specific Discourse views in Drupal blocks.
+
+23 Jul 2013 7.x-1.1
+CSS fixes.
+Fix watchdog calls which were breaking reports screen.
+
+15 Jul 2013 7.x-1.0
+Fix bug with Facebook auth.
+Update Twitter auth to use v1.1 of Twitter API.
+Account sync rechecks that account emails match.
+Better error logging.
+Fix jQuery parse error for plain text strings that start with '< '.
+Make the module work with anonymous page caching enabled.
+Remove the jquery_update requirement.
+Selenium tests.
+
+29 Apr 2013 7.x-1.0-beta3
+Adds support for Twitter external auth.
+Refactor of common external auth functions.
+Remove support for setting Discourse passwords from module API.
+Fix normal user sign up.
+Sanitize POSTed variables before inserting into Discourse DB.
+
+27 Apr 2013 7.x-1.0-beta2
+Adds support for Facebook external auth.
+
+25 Apr 2013 7.x-1.0-beta1
+Added hook to allow modification of user params before Drupal -> Discourse sync.
+Added map between Drupal and Discourse user ids.
+Added support for Discourse username checks for Drupal -> Discourse sync.
+
+22 Apr 2013
+Added support for Google OpenID external auth.
+Numerous fixes for user sync.

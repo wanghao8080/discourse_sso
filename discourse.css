@@ -1,0 +1,65 @@
+/* This is important, scrolling and cloaking won't work if height is set */
+body {
+  height: auto !important;
+}
+
+.ember-application {
+  line-height: 1;
+}
+.ember-application #main-outlet {
+  padding-top: inherit;
+}
+
+.ember-application table tr th {
+  background-color: inherit;
+}
+
+.ember-application table tr {
+  background-color: inherit;
+}
+
+.ember-application input {
+  margin: inherit;
+}
+
+.ember-application .user-main .about.collapsed-info .details h1 {
+  color: inherit;
+}
+
+.ember-application #reply-control {
+  left: 0;
+}
+
+.ember-application .post-cloak {
+  height: auto !important;
+}
+
+.modal .modal-body .error,
+.modal .modal-body .warning,
+.ember-application div.warning,
+.ember-application div.error {
+  background-color: transparent;
+  background-image: none;
+  border-color: transparent;
+}
+
+
+/* Make sure we don't display content before it's moved into position (blocks option) */
+body > .ember-view {
+  display: none;
+}
+
+/* Stop core overlay disappearing under Discourse header */
+.overlay-element {
+  z-index: 1000;
+}
+
+#overlay-container {
+  z-index: 1000;
+}
+
+/* Get admin menu above Discourse header */
+#admin-menu,
+#admin-menu .dropdown {
+  z-index: 1001;
+}

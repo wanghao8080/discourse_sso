@@ -1,0 +1,12 @@
+name = Discourse
+description = SSO 登录，宁皓修改版本
+package = Discourse
+core = 7.x
+
+; dependencies[] = querypath
+
+; Information added by Drupal.org packaging script on 2015-01-29
+version = "7.x-1.4"
+core = "7.x"
+project = "discourse"
+datestamp = "1422558482"

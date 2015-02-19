@@ -1,0 +1,108 @@
+<?php
+
+
+/**
+ * @file
+ * Set up and tear down variables used by this module.
+ */
+
+
+/**
+ * Implements hook_install().
+ */
+function discourse_install() {
+  $t = get_t();
+  if (!variable_get('discourse_server')) {
+    variable_set('discourse_server', 'http://localhost:4000');
+  }
+  if (!variable_get('discourse_forum_root')) {
+    variable_set('discourse_forum_root', 'forum');
+  }
+  drupal_set_message($t('Please enter your Discourse server at !admin and the forum should then be available at !forum.',
+      array(
+        '!admin' => l($t('Discourse settings'), 'admin/config/system/discourse'),
+        '!forum' => l($t('Discourse forum'), variable_get('discourse_forum_root'))
+      )
+  ));
+}
+
+
+/**
+ * Implements hook_uninstall().
+ */
+function discourse_uninstall() {
+  variable_del('discourse_server');
+  variable_del('discourse_forum_root');
+  variable_del('discourse_drupal_user_sync');
+  variable_del('discourse_sso_secret');
+}
+
+
+/**
+ * Implements hook_schema().
+ */
+function discourse_schema() {
+  $schema['discourse_users'] = array(
+    'description' => 'The base table for nodes.',
+    'fields' => array(
+      'uid' => array(
+        'description' => 'Drupal user id.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'discourse_uid' => array(
+        'description' => 'Discourse user id.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+    ),
+    'unique keys' => array(
+      'discourse_uid' => array('discourse_uid'),
+    ),
+    'foreign keys' => array(
+      'uid' => array(
+        'table' => 'users',
+        'columns' => array('uid' => 'uid'),
+      ),
+    ),
+    'primary key' => array('uid'),
+  );
+  return $schema;
+}
+
+
+/**
+ * Add a table to track Discourse user ids against Drupal user ids.
+ */
+function discourse_update_7100() {
+  $schema['discourse_users'] = array(
+    'description' => 'The base table for nodes.',
+    'fields' => array(
+      'uid' => array(
+        'description' => 'Drupal user id.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'discourse_uid' => array(
+        'description' => 'Discourse user id.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+    ),
+    'unique keys' => array(
+      'discourse_uid' => array('discourse_uid'),
+    ),
+    'foreign keys' => array(
+      'uid' => array(
+        'table' => 'users',
+        'columns' => array('uid' => 'uid'),
+      ),
+    ),
+    'primary key' => array('uid'),
+  );
+  db_create_table('discourse_users', $schema['discourse_users']);
+}
