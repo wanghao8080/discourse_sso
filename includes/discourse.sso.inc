@@ -41,9 +41,6 @@ function discourse_sso_validate($payload, $sig) {
       $username = $user->name;
     };
 
-    // $avatar = file_load($user->picture);
-    // $avatar_uri = file_create_url($avatar->uri);
-
     $payload = urldecode($payload);
     if (!hash_hmac("sha256", $payload, variable_get('discourse_sso_secret')) === $sig) {
         drupal_access_denied();
@@ -60,7 +57,6 @@ function discourse_sso_validate($payload, $sig) {
         'nonce'       => $nonce,
         'username'    => $username,
         'name'        => $user->name,
-        // 'avatar_url'  => $avatar_uri,
     )));
     $return_sig = hash_hmac("sha256", $return_payload, variable_get('discourse_sso_secret'));
     drupal_goto(variable_get('discourse_server') . '/session/sso_login', array('query' => array("sso" => $return_payload, "sig" => $return_sig)));

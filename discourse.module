@@ -10,7 +10,6 @@
  * server so that authentication cookies can be sent.
  */
 
-include('includes/discourse.blocks.inc');
 
 /**
  * Implements hook_menu().
@@ -35,75 +34,6 @@ function discourse_menu() {
       'type' => MENU_CALLBACK,
       'file' => 'includes/discourse.sso.inc',
   );
-  // if ($forum_root) {
-  //   $items[$forum_root] = array(
-  //       'title' => 'Forum',
-  //       'page callback' => 'discourse_html',
-  //       'access callback' => TRUE,
-  //       'description' => 'Returns the html for a Discourse page, and adds required javascript.',
-  //       'type' => MENU_CALLBACK,
-  //       'file' => 'includes/discourse.inc',
-  //   );
-  // }
+
   return $items;
-}
-
-
-/**
- * Implements hook_user_login().
- */
-function discourse_user_login() {
-  if (variable_get('discourse_sso_secret')) {
-    include_once('includes/discourse_user.inc');
-    discourse_login();
-  }
-}
-
-
-/**
- * Implements hook_user_logout().
- */
-function discourse_user_logout() {
-  if (variable_get('discourse_sso_secret')) {
-    include_once('includes/discourse_user.inc');
-    discourse_logout();
-  }
-}
-
-
-/*
- * Wrapper around discourse_http_request().
- */
-function discourse_http_request($url, $options = array(), $api_call = FALSE) {
-  if ($api_call) {
-    $cookies = explode('; ', $options['headers']['Cookie']);
-    unset($cookies['_t']);
-    unset($cookies['_forum_session']);
-    $options['headers']['Cookie'] = implode('; ', $cookies);
-    $api_qs = 'api_key=' . variable_get('discourse_api_key') . '&api_username=' . variable_get(('discourse_api_username'));
-    $url = (strpos('?', $url))? $url . '&' . $api_qs : $url . '?' . $api_qs;
-  }
-  $response = drupal_http_request($url, $options);
-  if (isset($response->headers['content-encoding']) && $response->headers['content-encoding'] == 'gzip') {
-    $response->data = gzinflate(substr($response->data,10));
-    unset($response->headers['content-encoding']);
-  }
-  if (isset($response->error)) {
-    watchdog('Discourse', 'Error: '. $response->error . ' at url: ' . $url, array(), WATCHDOG_ERROR);
-  }
-  return $response;
-}
-
-
-/**
- * Strip framework specific elements from the $_GET array.
- *
- * @return array
- */
-function discourse_get() {
-  $get = $_GET;
-  if (isset($get['q'])) {
-    unset($get['q']);
-  }
-  return $get;
 }
